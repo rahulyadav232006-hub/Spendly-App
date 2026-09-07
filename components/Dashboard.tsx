@@ -17,7 +17,8 @@ import {
   startOfWeek,
   sumCents,
 } from "@/lib/utils";
-import { BudgetRing, CatMark } from "./ui";
+import { BudgetRing } from "./ui";
+import { CatMascot } from "./CatMascot";
 import { TxnRow } from "./TxnRow";
 
 export function Dashboard({
@@ -161,7 +162,7 @@ export function Dashboard({
 
         {grouped.length === 0 ? (
           <div className="text-center py-14 bg-white dark:bg-stone-900 rounded-2xl border border-dashed border-slate-200 dark:border-stone-800">
-            <CatMark className="w-16 h-16 mx-auto mb-3" />
+            <CatMascot size={64} className="mx-auto mb-3" />
             <p className="text-sm font-medium text-slate-900 dark:text-stone-50">No expenses yet this week</p>
             <p className="text-xs text-slate-400 dark:text-stone-500 mt-1">Add your first one — it only takes a few seconds.</p>
           </div>

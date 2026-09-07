@@ -4,7 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Bell, Download, Monitor, Moon, Sun, Trash2, Upload } from "lucide-react";
 import { Settings, SpendlyState } from "@/types";
 import { CURRENCIES, getCurrencyMeta } from "@/lib/constants";
-import { CatMark, ConfirmDialog, inputCls } from "./ui";
+import { ConfirmDialog, inputCls } from "./ui";
+import { CatMascot } from "./CatMascot";
 
 export function SettingsPage({
   state,
@@ -166,7 +167,7 @@ export function SettingsPage({
       </SettingsSection>
 
       <div className="text-center text-xs text-slate-300 dark:text-stone-600 mt-8 flex flex-col items-center gap-2">
-        <CatMark className="w-10 h-10 opacity-60" />
+        <CatMascot size={40} className="opacity-60" />
         Spendly · made for tracking the week, not the spreadsheet
       </div>
 

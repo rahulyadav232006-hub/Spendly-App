@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { INCOME_SOURCES } from "@/lib/constants";
-import { CatMark } from "./ui";
+import { CatMascot } from "./CatMascot";
 
 export function Onboarding({
   onFinish,
@@ -28,7 +28,7 @@ export function Onboarding({
     <div className="min-h-screen flex items-center justify-center px-6 bg-gradient-to-b from-teal-50 to-white dark:from-stone-950 dark:to-stone-900">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <CatMark className="w-20 h-20 mx-auto mb-4" />
+          <CatMascot size={80} className="mx-auto mb-4" priority />
           <h1 className="text-2xl font-bold text-slate-900 dark:text-stone-50 font-display">
             {steps[step].title} {step === 0 && "🐱"}
           </h1>

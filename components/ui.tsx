@@ -3,25 +3,6 @@
 import React from "react";
 import { AlertTriangle, Check, X } from "lucide-react";
 
-export function CatMark({ className = "w-16 h-16" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="58" rx="30" ry="26" fill="#0f766e" opacity="0.12" />
-      <path d="M28 34 L34 14 L44 32 Z" fill="#0f766e" opacity="0.9" />
-      <path d="M72 34 L66 14 L56 32 Z" fill="#0f766e" opacity="0.9" />
-      <circle cx="50" cy="46" r="24" fill="#0f766e" />
-      <circle cx="42" cy="44" r="3" fill="#f0fdfa" />
-      <circle cx="58" cy="44" r="3" fill="#f0fdfa" />
-      <path d="M46 54 Q50 58 54 54" stroke="#f0fdfa" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M50 51 L47 51 L50 54 Z" fill="#f0fdfa" />
-      <path d="M28 50 Q18 48 16 44" stroke="#0f766e" strokeWidth="2" strokeLinecap="round" />
-      <path d="M28 56 Q17 57 14 55" stroke="#0f766e" strokeWidth="2" strokeLinecap="round" />
-      <path d="M72 50 Q82 48 84 44" stroke="#0f766e" strokeWidth="2" strokeLinecap="round" />
-      <path d="M72 56 Q83 57 86 55" stroke="#0f766e" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 export function IconBubble({ emoji, size = "w-10 h-10", tone }: { emoji?: string; size?: string; tone?: string }) {
   return (
     <div className={`${size} rounded-full flex items-center justify-center text-lg shrink-0`} style={{ backgroundColor: tone ? `${tone}1f` : "#f4f4f5" }}>

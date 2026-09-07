@@ -4,7 +4,8 @@ import React, { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { SpendlyState, Transaction } from "@/types";
 import { endOfWeek, inRange, startOfWeek } from "@/lib/utils";
-import { CatMark, inputCls } from "./ui";
+import { inputCls } from "./ui";
+import { CatMascot } from "./CatMascot";
 import { TxnRow } from "./TxnRow";
 
 export function Transactions({
@@ -75,7 +76,7 @@ export function Transactions({
 
       {filtered.length === 0 ? (
         <div className="text-center py-14 bg-white dark:bg-stone-900 rounded-2xl border border-dashed border-slate-200 dark:border-stone-800">
-          <CatMark className="w-14 h-14 mx-auto mb-3" />
+          <CatMascot size={56} className="mx-auto mb-3" />
           <p className="text-sm font-medium text-slate-900 dark:text-stone-50">No transactions found</p>
           <p className="text-xs text-slate-400 dark:text-stone-500 mt-1">Try changing your filters.</p>
         </div>

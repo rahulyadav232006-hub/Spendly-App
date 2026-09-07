@@ -8,7 +8,7 @@ import { startOfWeek } from "@/lib/utils";
 import { useSpendlyStore } from "@/hooks/useSpendlyStore";
 import { ConfirmDialog, Toast, ToastState } from "./ui";
 import { Onboarding } from "./Onboarding";
-import { Sidebar, BottomNav, PageId } from "./Nav";
+import { Sidebar, BottomNav, MobileHeader, PageId } from "./Nav";
 import { Dashboard } from "./Dashboard";
 import { Insights } from "./Insights";
 import { Transactions } from "./Transactions";
@@ -145,6 +145,7 @@ export default function SpendlyApp() {
     <div className="min-h-screen flex bg-stone-50 dark:bg-stone-950">
       <Sidebar page={page} setPage={setPage} />
       <div className="flex-1 min-w-0">
+        <MobileHeader />
         <main className="max-w-3xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
           {page === "dashboard" && (
             <Dashboard

@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { Category, RegularExpense, SpendlyState } from "@/types";
 import { formatMoney } from "@/lib/utils";
-import { CatMark, ConfirmDialog, Field, IconBubble, Sheet, inputCls } from "./ui";
+import { ConfirmDialog, Field, IconBubble, Sheet, inputCls } from "./ui";
+import { CatMascot } from "./CatMascot";
 
 function RegularExpenseForm({
   open,
@@ -112,7 +113,7 @@ export function RegularExpenses({
 
       {regularExpenses.length === 0 ? (
         <div className="text-center py-14 bg-white dark:bg-stone-900 rounded-2xl border border-dashed border-slate-200 dark:border-stone-800">
-          <CatMark className="w-14 h-14 mx-auto mb-3" />
+          <CatMascot size={56} className="mx-auto mb-3" />
           <p className="text-sm font-medium text-slate-900 dark:text-stone-50">No regular expenses yet</p>
           <p className="text-xs text-slate-400 dark:text-stone-500 mt-1">Add things like bus fare or a subscription.</p>
         </div>

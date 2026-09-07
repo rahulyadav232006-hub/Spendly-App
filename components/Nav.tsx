@@ -2,7 +2,7 @@
 
 import React from "react";
 import { BarChart3, Home, List, Plus, Repeat, Settings as SettingsIcon } from "lucide-react";
-import { CatMark } from "./ui";
+import { CatMascot } from "./CatMascot";
 
 export type PageId = "dashboard" | "insights" | "transactions" | "regular" | "settings";
 
@@ -18,7 +18,7 @@ export function Sidebar({ page, setPage }: { page: PageId; setPage: (p: PageId) 
   return (
     <aside className="hidden sm:flex flex-col w-60 shrink-0 border-r border-slate-100 dark:border-stone-800 px-4 py-6">
       <div className="flex items-center gap-2 px-2 mb-8">
-        <CatMark className="w-8 h-8" />
+        <CatMascot size={32} decorative={false} priority />
         <span className="font-bold text-lg text-slate-900 dark:text-stone-50 font-display">Spendly</span>
       </div>
       <nav className="flex flex-col gap-1">
@@ -36,6 +36,15 @@ export function Sidebar({ page, setPage }: { page: PageId; setPage: (p: PageId) 
         ))}
       </nav>
     </aside>
+  );
+}
+
+export function MobileHeader() {
+  return (
+    <header className="sm:hidden flex items-center gap-2 px-4 py-3 border-b border-slate-100 dark:border-stone-800 bg-white dark:bg-stone-900 sticky top-0 z-20">
+      <CatMascot size={28} decorative={false} priority />
+      <span className="font-bold text-base text-slate-900 dark:text-stone-50 font-display">Spendly</span>
+    </header>
   );
 }
 
