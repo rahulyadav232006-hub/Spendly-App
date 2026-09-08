@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ArrowDownRight, ArrowUpRight, ChevronLeft, ChevronRight, PiggyBank, Wallet } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, ChevronLeft, ChevronRight, Plus, PiggyBank, Wallet } from "lucide-react";
 import { RegularExpense, SpendlyState, Transaction } from "@/types";
 import { addWeeks, endOfWeek, formatMoney, formatDayLabel, formatWeekRangeLabel, greetingForNow, isSameDay, startOfDay, startOfWeek } from "@/lib/utils";
 import { computeWeekStats } from "@/lib/weekStats";
@@ -14,6 +14,7 @@ export function Dashboard({
   weekStart,
   setWeekStart,
   onOpenAddMoney,
+  onOpenAddExpense,
   onEditTxn,
   onDeleteTxn,
   onQuickAddRegular,
@@ -22,6 +23,7 @@ export function Dashboard({
   weekStart: Date;
   setWeekStart: (d: Date) => void;
   onOpenAddMoney: () => void;
+  onOpenAddExpense: () => void;
   onEditTxn: (t: Transaction) => void;
   onDeleteTxn: (t: Transaction) => void;
   onQuickAddRegular: (r: RegularExpense) => void;
@@ -146,11 +148,24 @@ export function Dashboard({
       )}
 
       <div>
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-2 gap-2">
           <p className="text-sm font-semibold text-slate-900 dark:text-stone-50">This Week&apos;s Expenses</p>
-          <button onClick={onOpenAddMoney} className="text-xs font-medium text-teal-700 flex items-center gap-1">
-            <Wallet className="w-3.5 h-3.5" /> Add money
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={onOpenAddMoney}
+              aria-label="Add money"
+              className="flex items-center gap-1 text-xs font-medium text-teal-700 dark:text-teal-400 px-3 py-2 rounded-full border border-teal-200 dark:border-teal-900 hover:bg-teal-50 dark:hover:bg-teal-950 transition-colors"
+            >
+              <Wallet className="w-3.5 h-3.5" /> Add money
+            </button>
+            <button
+              onClick={onOpenAddExpense}
+              aria-label="Add expense"
+              className="flex items-center justify-center w-9 h-9 rounded-full bg-teal-700 hover:bg-teal-800 text-white shrink-0 transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {grouped.length === 0 ? (
