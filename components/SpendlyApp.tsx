@@ -162,6 +162,7 @@ export default function SpendlyApp() {
               weekStart={weekStart}
               setWeekStart={setWeekStart}
               onOpenAddMoney={() => setAddMoneyOpen(true)}
+              onOpenAddExpense={() => setAddExpenseOpen(true)}
               onEditTxn={setEditingTxn}
               onDeleteTxn={setDeletingTxn}
               onQuickAddRegular={quickAddRegular}
@@ -178,7 +179,7 @@ export default function SpendlyApp() {
         </main>
       </div>
 
-      <BottomNav page={page} setPage={setPage} onAdd={() => setAddExpenseOpen(true)} />
+      <BottomNav page={page} setPage={setPage} />
 
       <button
         onClick={() => setAddExpenseOpen(true)}

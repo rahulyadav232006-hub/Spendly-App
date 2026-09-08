@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BarChart3, Home, List, Plus, Repeat, Settings as SettingsIcon } from "lucide-react";
+import { BarChart3, Home, List, Repeat, Settings as SettingsIcon } from "lucide-react";
 import { CatMascot } from "./CatMascot";
 
 export type PageId = "dashboard" | "insights" | "transactions" | "regular" | "settings";
@@ -48,19 +48,11 @@ export function MobileHeader() {
   );
 }
 
-export function BottomNav({ page, setPage, onAdd }: { page: PageId; setPage: (p: PageId) => void; onAdd: () => void }) {
-  const left = NAV_ITEMS.slice(0, 2);
-  const right = NAV_ITEMS.slice(2);
+export function BottomNav({ page, setPage }: { page: PageId; setPage: (p: PageId) => void }) {
   return (
-    <nav className="sm:hidden fixed bottom-0 inset-x-0 bg-white dark:bg-stone-900 border-t border-slate-100 dark:border-stone-800 px-2 pt-1.5 pb-3 z-40">
+    <nav className="sm:hidden fixed bottom-0 inset-x-0 bg-white dark:bg-stone-900 border-t border-slate-100 dark:border-stone-800 px-1 pt-1.5 pb-3 z-40">
       <div className="flex items-center justify-between">
-        {left.map((item) => (
-          <NavBtn key={item.id} item={item} active={page === item.id} onClick={() => setPage(item.id)} />
-        ))}
-        <button onClick={onAdd} className="w-14 h-14 rounded-full bg-teal-700 hover:bg-teal-800 text-white flex items-center justify-center shadow-lg -mt-6 shrink-0" aria-label="Add expense">
-          <Plus className="w-6 h-6" />
-        </button>
-        {right.map((item) => (
+        {NAV_ITEMS.map((item) => (
           <NavBtn key={item.id} item={item} active={page === item.id} onClick={() => setPage(item.id)} />
         ))}
       </div>
