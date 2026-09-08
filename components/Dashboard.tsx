@@ -1,22 +1,10 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { ArrowDownRight, ArrowUpRight, ChevronLeft, ChevronRight, Wallet } from "lucide-react";
+import React from "react";
+import { ArrowDownRight, ArrowUpRight, ChevronLeft, ChevronRight, PiggyBank, Wallet } from "lucide-react";
 import { RegularExpense, SpendlyState, Transaction } from "@/types";
-import {
-  addWeeks,
-  endOfWeek,
-  formatMoney,
-  formatDayLabel,
-  formatWeekRangeLabel,
-  fromCents,
-  greetingForNow,
-  inRange,
-  isSameDay,
-  startOfDay,
-  startOfWeek,
-  sumCents,
-} from "@/lib/utils";
+import { addWeeks, endOfWeek, formatMoney, formatDayLabel, formatWeekRangeLabel, greetingForNow, isSameDay, startOfDay, startOfWeek } from "@/lib/utils";
+import { computeWeekStats } from "@/lib/weekStats";
 import { BudgetRing } from "./ui";
 import { CatMascot } from "./CatMascot";
 import { TxnRow } from "./TxnRow";
@@ -40,16 +28,14 @@ export function Dashboard({
 }) {
   const { settings, transactions, regularExpenses } = state;
   const weekEnd = endOfWeek(weekStart);
-  const weekTxns = useMemo(() => transactions.filter((t) => inRange(t.dateTime, weekStart, weekEnd)), [transactions, weekStart, weekEnd]);
-  const added = fromCents(sumCents(weekTxns.filter((t) => t.type === "income").map((t) => t.amount)));
-  const spent = fromCents(sumCents(weekTxns.filter((t) => t.type === "expense").map((t) => t.amount)));
-  const remaining = added - spent;
+  const stats = computeWeekStats(transactions, weekStart);
+  const { added, spent, carryForward, remaining } = stats;
   const budget = settings.weeklyBudget;
   const budgetPercent = budget > 0 ? (spent / budget) * 100 : 0;
   const isCurrentWeek = isSameDay(weekStart, startOfWeek(new Date()));
 
-  const expenseTxns = weekTxns.filter((t) => t.type === "expense").sort((a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime());
-  const grouped = useMemo(() => {
+  const expenseTxns = [...stats.weekExpenses].sort((a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime());
+  const grouped = (() => {
     const map = new Map<string, Transaction[]>();
     for (const t of expenseTxns) {
       const key = startOfDay(t.dateTime).toISOString();
@@ -57,8 +43,7 @@ export function Dashboard({
       map.get(key)!.push(t);
     }
     return Array.from(map.entries()).sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expenseTxns]);
+  })();
 
   const catById = Object.fromEntries(settings.categories.map((c) => [c.id, c]));
 
@@ -89,6 +74,14 @@ export function Dashboard({
           <div>
             <p className="text-teal-100 text-sm mb-1">Remaining</p>
             <p className="text-4xl font-bold tabular-nums font-display">{formatMoney(remaining, settings.currency)}</p>
+            {carryForward !== 0 && (
+              <p className="text-teal-100 text-xs mt-1.5 flex items-center gap-1">
+                <PiggyBank className="w-3.5 h-3.5" />
+                {carryForward > 0
+                  ? `Includes ${formatMoney(carryForward, settings.currency)} carried forward`
+                  : `Includes ${formatMoney(Math.abs(carryForward), settings.currency)} carried over from being short`}
+              </p>
+            )}
             {remaining < 0 && <p className="text-rose-200 text-xs mt-1.5 font-medium">You&apos;ve gone over — that&apos;s okay, just keep an eye on it.</p>}
           </div>
           <div className="relative shrink-0">

@@ -4,44 +4,22 @@ import React, { useMemo } from "react";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { SpendlyState } from "@/types";
-import { DAYS_SHORT, MONTHS_SHORT, addDays, addWeeks, endOfWeek, formatMoney, fromCents, inRange, isSameDay, sumCents } from "@/lib/utils";
+import { MONTHS_SHORT, addWeeks, formatMoney, fromCents, inRange, sumCents } from "@/lib/utils";
+import { computeWeekStats, getCategoryTotals, getDailyTotals } from "@/lib/weekStats";
 import { Card, EmptyMini, StatCard } from "./ui";
 
 export function Insights({ state, weekStart }: { state: SpendlyState; weekStart: Date }) {
   const { settings, transactions } = state;
-  const weekEnd = endOfWeek(weekStart);
-  const prevStart = addWeeks(weekStart, -1);
-  const prevEnd = endOfWeek(prevStart);
 
-  const weekExpenses = transactions.filter((t) => t.type === "expense" && inRange(t.dateTime, weekStart, weekEnd));
-  const prevWeekExpenses = transactions.filter((t) => t.type === "expense" && inRange(t.dateTime, prevStart, prevEnd));
+  const thisWeek = useMemo(() => computeWeekStats(transactions, weekStart), [transactions, weekStart]);
+  const prevWeek = useMemo(() => computeWeekStats(transactions, addWeeks(weekStart, -1)), [transactions, weekStart]);
 
-  const weekTotal = fromCents(sumCents(weekExpenses.map((t) => t.amount)));
-  const prevWeekTotal = fromCents(sumCents(prevWeekExpenses.map((t) => t.amount)));
+  const weekTotal = thisWeek.spent;
+  const prevWeekTotal = prevWeek.spent;
   const pctChange = prevWeekTotal > 0 ? ((weekTotal - prevWeekTotal) / prevWeekTotal) * 100 : weekTotal > 0 ? 100 : 0;
 
-  const dailyData = useMemo(() => {
-    return Array.from({ length: 7 }, (_, i) => {
-      const day = addDays(weekStart, i);
-      const total = fromCents(sumCents(weekExpenses.filter((t) => isSameDay(t.dateTime, day)).map((t) => t.amount)));
-      return { day: DAYS_SHORT[i], amount: total };
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [weekExpenses, weekStart]);
-
-  const categoryData = useMemo(() => {
-    const map: Record<string, number> = {};
-    for (const t of weekExpenses) {
-      map[t.category] = (map[t.category] || 0) + t.amount;
-    }
-    return Object.entries(map)
-      .map(([id, cents]) => {
-        const cat = settings.categories.find((c) => c.id === id) || { label: id, color: "#94a3b8", emoji: "✨" };
-        return { id, label: cat.label, emoji: cat.emoji, color: cat.color, value: fromCents(cents) };
-      })
-      .sort((a, b) => b.value - a.value);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [weekExpenses, settings.categories]);
+  const dailyData = useMemo(() => getDailyTotals(thisWeek.weekExpenses, weekStart), [thisWeek.weekExpenses, weekStart]);
+  const categoryData = useMemo(() => getCategoryTotals(thisWeek.weekExpenses, settings.categories), [thisWeek.weekExpenses, settings.categories]);
 
   const monthlyData = useMemo(() => {
     const now = new Date();

@@ -35,6 +35,7 @@ export interface RegularExpense {
 
 export interface ReminderSettings {
   enabled: boolean;
+  lastFiredDate?: string;
   time: string; // "HH:MM"
   frequency: "daily" | "weekdays" | "weekly";
 }
