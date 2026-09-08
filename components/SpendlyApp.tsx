@@ -6,6 +6,7 @@ import { Transaction, RegularExpense } from "@/types";
 import { INCOME_SOURCES } from "@/lib/constants";
 import { startOfWeek } from "@/lib/utils";
 import { useSpendlyStore } from "@/hooks/useSpendlyStore";
+import { useReminderScheduler } from "@/hooks/useReminderScheduler";
 import { ConfirmDialog, Toast, ToastState } from "./ui";
 import { Onboarding } from "./Onboarding";
 import { Sidebar, BottomNav, MobileHeader, PageId } from "./Nav";
@@ -50,6 +51,14 @@ export default function SpendlyApp() {
     if (toastTimer.current) clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToast(null), 2600);
   }, []);
+
+  // Hooks must run unconditionally (before the loading/onboarding early
+  // returns below), so fall back to a harmless disabled reminder while
+  // state is still loading — useReminderScheduler no-ops when disabled.
+  const reminderSettings = state?.settings.reminder ?? { enabled: false, time: "20:00", frequency: "daily" as const };
+  useReminderScheduler(reminderSettings, (dateKey) => {
+    updateSettings({ reminder: { ...reminderSettings, lastFiredDate: dateKey } });
+  });
 
   useEffect(() => {
     if (error) notify(error, "error");
